@@ -7,3 +7,9 @@ npx create-next-app@latest ./
 ```
 
 Then Install the shadcn
+
+```bash
+npx shadcn@latest init
+```
+
+C
