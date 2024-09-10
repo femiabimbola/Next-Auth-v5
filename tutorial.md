@@ -12,4 +12,31 @@ Then Install the shadcn
 npx shadcn@latest init
 ```
 
-C
+## Files conventions
+
+<b> Any time you created a layout file, They has to be children o</b>
+
+Always add this css
+
+```global.css
+html, body, :root { height: 100%}
+```
+
+## Using custom fonts
+
+```page.tsx
+import {cn} from "@/lib/utils";
+
+const font = Poppins({
+  subsets: ["latin"],
+  weight: ["600"],
+});
+
+const page = () => {
+  return (
+    <h1
+    className={cn(
+    "text-6xl font-semibold text-white drop-shadow-md", font.className)}> Auth </h1>
+    )
+}
+```
