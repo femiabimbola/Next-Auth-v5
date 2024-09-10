@@ -40,3 +40,9 @@ const page = () => {
     )
 }
 ```
+
+## Steps
+
+1. Designed the homepage first
+2. Working on the `components/login-button.tsx`
+3. Created the `auth/login`, then created the login form
