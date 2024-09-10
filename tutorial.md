@@ -26,6 +26,7 @@ html, body, :root { height: 100%}
 
 ```page.tsx
 import {cn} from "@/lib/utils";
+import {Poppins} from "next/font/google";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -46,3 +47,5 @@ const page = () => {
 1. Designed the homepage first
 2. Working on the `components/login-button.tsx`
 3. Created the `auth/login`, then created the login form
+4. I'm using card for the creation of the form
+5. Design the button
