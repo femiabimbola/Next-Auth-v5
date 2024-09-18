@@ -1,3 +1,11 @@
+import { RegisterForm } from "@/components/register-form";
+
 const Register = () => {
-  return <div> The registration page</div>;
+  return (
+    <div>
+      <RegisterForm />
+    </div>
+  );
 };
+
+export default Register;
