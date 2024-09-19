@@ -8,15 +8,28 @@ import * as z from "zod";
 import { Input } from "./ui/input";
 import { User2, Lock } from "lucide-react";
 import { Button } from "./ui/button";
+import FormError from "@/components/form-error";
+import FormSuccess from "@/components/form-success";
+import axios from "axios";
+import { useState } from "react";
 
 export const LoginForm = () => {
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: { email: "", password: "" },
   });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    setError("");
+    setSuccess("");
     console.log(values);
+    axios.post("/api/login/", values).then((data) => {
+      // setError(data.error);
+      // setSuccess(data.success);
+    });
   };
 
   return (
@@ -77,9 +90,11 @@ export const LoginForm = () => {
             )}
           />
         </div>
+        <FormError message={error} />
+        <FormSuccess message={success} />
         <Button
           type="submit"
-          className="w-full py-6 bg-[#01113B] "
+          className="w-full py-6 bg-[#01113B]"
         >
           <p className="text-xl"> Login</p>
         </Button>
