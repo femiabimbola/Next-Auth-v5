@@ -8,7 +8,7 @@ interface BackButtonProps {
 export const BackButton = ({ label, href }: BackButtonProps) => {
   return (
     <div className="mx-auto hover:text-blue-900">
-      <Link href={href}>{label}</Link>;
+      <Link href={href}>{label}</Link>
     </div>
   );
 };
