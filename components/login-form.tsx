@@ -11,11 +11,13 @@ import { Button } from "./ui/button";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 
 export const LoginForm = () => {
+  // Setting the state
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -25,10 +27,13 @@ export const LoginForm = () => {
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
-    console.log(values);
-    axios.post("/api/login/", values).then((data) => {
-      // setError(data.error);
-      // setSuccess(data.success);
+
+    startTransition(() => {
+      axios.post("/api/login/", values).then((data: any) => {
+        setError(data.error);
+        setSuccess(data.success);
+      });
+      console.log();
     });
   };
 
@@ -49,6 +54,7 @@ export const LoginForm = () => {
                   <FormControl>
                     <Input
                       {...field}
+                      disabled={isPending}
                       className=" bg-slate-200 border border-gray-300 rounded-lg pl-8 focus:outline-none"
                       // disabled={isPending}
                       placeholder="Enter your email"
@@ -75,7 +81,7 @@ export const LoginForm = () => {
                     <Input
                       {...field}
                       className=" bg-slate-200 border border-gray-300 rounded-lg pl-8 focus:outline-none"
-                      // disabled={isPending}
+                      disabled={isPending}
                       placeholder="Enter your password"
                       type="password"
                     />
@@ -95,6 +101,7 @@ export const LoginForm = () => {
         <Button
           type="submit"
           className="w-full py-6 bg-[#01113B]"
+          disabled={isPending}
         >
           <p className="text-xl"> Login</p>
         </Button>
