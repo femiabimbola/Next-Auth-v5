@@ -22,7 +22,7 @@ export const RegisterForm = () => {
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: "", password: "", name: "" },
   });
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
@@ -30,7 +30,7 @@ export const RegisterForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      axios.post("/api/login/", values).then((data: any) => {
+      axios.post("/api/register/", values).then((data: any) => {
         setError(data.error);
         setSuccess(data.success);
       });
@@ -59,7 +59,6 @@ export const RegisterForm = () => {
                       className=" bg-slate-200 border border-gray-300 rounded-lg pl-8 focus:outline-none"
                       // disabled={isPending}
                       placeholder="Enter your name"
-                      type="name"
                     />
                   </FormControl>
                   <User2
