@@ -86,7 +86,7 @@ if (process.env.NODE_ENV !== "production") globalThis.prisma = db; // Nextjs hot
 // export const db = new PrismaClient(); it is for production
 ```
 
-Create the `.env` file before you RUN
+Create the `.env` file before you RUN. Prisma does not support `.env.local`
 
 ```bash
 npx prisma init
@@ -104,4 +104,12 @@ Then you push the database to your database provider
 
 ```bash
 npx prisma db push
+```
+
+<b> Every time you change the schema, run this</b>
+
+```bash
+npx prisma generate
+
+npx primsa db push
 ```
