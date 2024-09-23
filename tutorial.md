@@ -49,3 +49,59 @@ const page = () => {
 3. Created the `auth/login`, then created the login form
 4. I'm using card for the creation of the form
 5. Design the button
+
+## Working with Prisma
+
+```bash
+npm i -D prisma
+```
+
+Then
+
+```bash
+npm i  @prisma/client
+```
+
+After the prisma client, create a file in the lib folder `lib/db.ts`
+
+```bash
+// Prisma Learning, do this before doing Prisma init, after add this, do Prisma init
+
+import { PrismaClient } from "@prisma/client";
+
+declare global {
+  var prisma: PrismaClient | undefined;
+}
+
+export const db = globalThis.prisma || new PrismaClient();
+
+/**
+ * In production, Prisma only uses  --> export const db = new PrismaClient()
+ * In development,  instead of create primsaclient everytime, we save (hotreload)
+ * It uses globalThis.prisma  for prismaClient, hotreload is not affected
+ */
+
+if (process.env.NODE_ENV !== "production") globalThis.prisma = db; // Nextjs hotreload will use the globalThis.prisma
+
+// export const db = new PrismaClient(); it is for production
+```
+
+Create the `.env` file before you RUN
+
+```bash
+npx prisma init
+```
+
+In the schema.prisma, connect the database, create the first model
+
+After creating the first model, then run to create locally
+
+```bash
+npx prisma generate
+```
+
+Then you push the database to your database provider
+
+```bash
+npx prisma db push
+```

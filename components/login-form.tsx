@@ -29,9 +29,9 @@ export const LoginForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      axios.post("/api/login/", values).then((data: any) => {
-        setError(data.error);
-        setSuccess(data.success);
+      axios.post("/api/login/", values).then((response: any) => {
+        setError(response.data.error);
+        setSuccess(response.data.success);
       });
       console.log();
     });

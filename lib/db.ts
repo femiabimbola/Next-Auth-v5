@@ -10,8 +10,8 @@ export const db = globalThis.prisma || new PrismaClient();
 
 /**
  * In production, Prisma only uses  --> export const db = new PrismaClient()
- * In development, because of hot reload, create the inital prismaclient,
- *  then uses globalThis.prisma for hotreload, hotreload is not affected
+ * In development,  instead of create primsaclient everytime, we save (hotreload)
+ *  it uses globalThis.prisma  for prismaClient, hotreload is not affected
  */
 
 if (process.env.NODE_ENV !== "production") globalThis.prisma = db; // Nextjs hotreload will use the globalThis.prisma
