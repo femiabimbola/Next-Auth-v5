@@ -30,11 +30,10 @@ export const RegisterForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      axios.post("/api/register/", values).then((data: any) => {
-        setError(data.error);
-        setSuccess(data.success);
+      axios.post("/api/register/", values).then((response: any) => {
+        setError(response.data.error);
+        setSuccess(response.data.success);
       });
-      console.log();
     });
   };
 

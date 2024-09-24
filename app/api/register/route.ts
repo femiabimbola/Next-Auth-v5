@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { RegisterSchema } from "@/schemas";
 import bcrypt from "bcrypt";
 import { db } from "@/lib/db";
+import { getUserByEmail } from "@/data/user";
 
 export const POST = async (request: Request) => {
   try {
@@ -14,8 +15,11 @@ export const POST = async (request: Request) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const exisitingUser = await db.user.findUnique({ where: { email } });
-    if (exisitingUser) return NextResponse.json({ error: "Email already in use" }, { status: 401 });
+    // const exisitingUser = await db.user.findUnique({ where: { email } });
+    const exisitingUser = await getUserByEmail(email);
+    if (exisitingUser) return NextResponse.json({ error: "Email already in use" }, { status: 200 });
+
+    await db.user.create({ data: { name, email, password: hashedPassword } });
 
     return NextResponse.json({ success: "user created sucessfully" }, { status: 201 });
   } catch (error) {
