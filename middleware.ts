@@ -1,3 +1,6 @@
+// Middleware work strictly on the edge, Auth.ts which prisma uses does not support edge
+// So, auth.config.ts supplies to middleware and auth.ts, Authjs strictly uses auth.ts
+
 import authConfig from "./auth.config";
 import NextAuth from "next-auth";
 import { NextRequest } from "next/server";
@@ -8,11 +11,8 @@ import { NextRequest } from "next/server";
 
 // 2. Wrapped middleware option
 const { auth } = NextAuth(authConfig);
-
-// the middlware just calls the function above, ensuring all the routes are called
 export default auth(async function middleware(req: NextRequest) {
   // Your custom middleware logic goes here
   const login = !req;
   console.log("route ->", login);
-  // console.log("route ->", req.nextUrl.pathname);
 });
