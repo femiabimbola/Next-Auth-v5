@@ -6,7 +6,7 @@ import { LoginSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Input } from "./ui/input";
-import { User2, Lock } from "lucide-react";
+import { User2, Lock, EyeIcon, EyeOff, Eye } from "lucide-react";
 import { Button } from "./ui/button";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
@@ -17,6 +17,7 @@ export const LoginForm = () => {
   // Setting the state
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -76,20 +77,25 @@ export const LoginForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel> Password</FormLabel>
-                <div className="relative my-3">
+                <div className="flex items-center px-3 py-1 bg-slate-200 border border-gray-300 rounded-lg">
+                  <Lock
+                    size={24}
+                    className=" flex items-center pointer-events-none"
+                  />
                   <FormControl>
                     <Input
                       {...field}
-                      className=" bg-slate-200 border border-gray-300 rounded-lg pl-8 focus:outline-none"
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0 "
                       disabled={isPending}
                       placeholder="Enter your password"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                     />
                   </FormControl>
-                  <Lock
-                    size={30}
-                    className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-                  />
+                  {showPassword ? (
+                    <EyeOff onClick={() => setShowPassword(false)} />
+                  ) : (
+                    <Eye onClick={() => setShowPassword(true)} />
+                  )}
                 </div>
                 <FormMessage />
               </FormItem>
