@@ -38,15 +38,19 @@ export const middleware = (req: any) => {
 
   if (isApiAuthRoute) return null; //Means no need to protect
 
-  if (isAuthRoute) {
-    if (isLoggedIn) return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl));
-    return null;
-  }
+  // if (isAuthRoute) {
+  //   if (isLoggedIn) return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl));
+  //   return null;
+  // }
 
-  if (!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL(`/auth/login`, req.nextUrl));
-  }
+  // if (!isLoggedIn && !isPublicRoute) {
+  //   return Response.redirect(new URL(`/auth/login`, req.nextUrl));
+  // }
   return null;
 };
 
 export default auth(middleware);
+
+// export default auth(async function middleware(req: NextRequest) {
+//   // Your custom middleware logic goes here
+// });

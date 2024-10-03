@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { RegisterSchema } from "@/schemas";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/data/user";
 
