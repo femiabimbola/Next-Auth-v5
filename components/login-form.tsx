@@ -11,7 +11,9 @@ import { Button } from "./ui/button";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import axios from "axios";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { useSession, SessionProvider } from "next-auth/react";
 
 export const LoginForm = () => {
   // Setting the state
@@ -19,22 +21,22 @@ export const LoginForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
   const [showPassword, setShowPassword] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: { email: "", password: "" },
   });
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    setError("error");
+  const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
+    setError("");
     setSuccess("");
 
-    startTransition(() => {
-      axios.post("/api/login/", values).then((response: any) => {
-        setError(response.data.error);
+    startTransition(async () => {
+      await axios.post("/api/login/", values).then((response: any) => {
         setSuccess(response.data.success);
+        setError(response.data.error);
       });
-      console.log();
     });
   };
 

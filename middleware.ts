@@ -30,25 +30,28 @@ const { auth } = NextAuth(authConfig);
 //   }
 // });
 
-export const middleware = (req: any) => {
+export const middleware = async (req: any) => {
   const isApiAuthRoute = req.nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(req.nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(req.nextUrl.pathname);
-  const isLoggedIn = !!req.auth;
+  const isLoggedIn = !req.auth;
 
   if (isApiAuthRoute) return null; //Means no need to protect
 
-  // if (isAuthRoute) {
-  //   if (isLoggedIn) return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl));
-  //   return null;
-  // }
+  console.log(isLoggedIn);
 
-  // if (!isLoggedIn && !isPublicRoute) {
-  //   return Response.redirect(new URL(`/auth/login`, req.nextUrl));
-  // }
+  if (isAuthRoute) {
+    if (isLoggedIn) return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl));
+    return null;
+  }
+
+  if (!isLoggedIn && !isPublicRoute) {
+    return Response.redirect(new URL(`/auth/login`, req.nextUrl));
+  }
   return null;
 };
 
+// @ts-ignore
 export default auth(middleware);
 
 // export default auth(async function middleware(req: NextRequest) {
