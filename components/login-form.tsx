@@ -35,6 +35,7 @@ export const LoginForm = () => {
     startTransition(async () => {
       await axios.post("/api/login/", values).then((response: any) => {
         setSuccess(response.data.success);
+        router.push("/settings");
         setError(response.data.error);
       });
     });

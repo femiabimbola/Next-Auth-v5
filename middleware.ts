@@ -1,59 +1,49 @@
-// Middleware work strictly on the edge, Auth.ts which prisma uses does not support edge
-// So, auth.config.ts supplies to middleware and auth.ts, Authjs strictly uses auth.ts
+"use server";
 
 import authConfig from "@/auth.config";
 import NextAuth from "next-auth";
-import { NextRequest } from "next/server";
+import { redirect } from "next/navigation";
+import { NextResponse, NextRequest } from "next/server";
 
+const { auth } = NextAuth(authConfig);
 import { apiAuthPrefix, DEFAULT_LOGIN_REDIRECT, authRoutes, publicRoutes } from "@/routes";
 
-// Use only one of the two middleware options below
-// 1. Use middleware directly
-// export const { auth: middleware } = NextAuth(authConfig)
+//@ts-ignore
+export default auth((req) => {
+  const pathname = req.nextUrl;
+  const { nextUrl } = req;
+  const isLoggedIn = !!req.auth;
+  // console.log(req.nextUrl.pathname)
 
-// 2. Wrapped middleware option
-const { auth } = NextAuth(authConfig);
+  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-// export default auth(async function middleware(req) {
-//   // Your custom middleware logic goes here
-//   // const {nextUrl} = req;
-//   const isApiAuthRoute = req.nextUrl.pathname.startsWith(apiAuthPrefix);
-//   const isPublicRoute = publicRoutes.includes(req.nextUrl.pathname);
-//   const isAuthRoute = authRoutes.includes(req.nextUrl.pathname);
-//   const isLoggedIn = !!req.auth;
-
-//   if (isApiAuthRoute) return null; //Means no need to protect
-//   if (isAuthRoute) {
-//     if (isLoggedIn)
-//       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl));
-//     return null;
-//   }
-// });
-
-export const middleware = async (req: any) => {
-  const isApiAuthRoute = req.nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isPublicRoute = publicRoutes.includes(req.nextUrl.pathname);
-  const isAuthRoute = authRoutes.includes(req.nextUrl.pathname);
-  const isLoggedIn = !req.auth;
-
-  if (isApiAuthRoute) return null; //Means no need to protect
+  if (isApiAuthRoute) return null;
 
   console.log(isLoggedIn);
-
   if (isAuthRoute) {
-    if (isLoggedIn) return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl));
+    // if (isLoggedIn) return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    if (isLoggedIn) return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.url));
     return null;
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL(`/auth/login`, req.nextUrl));
+    let callbackUrl = nextUrl.pathname;
+    if (nextUrl.search) callbackUrl += nextUrl.search;
+
+    const encodedCallbackUrl = encodeURIComponent(callbackUrl);
+
+    // return Response.redirect(new URL(`/auth/login?callbackUrl=$(encodedCallbackUrl)`, nextUrl));
+
+    return Response.redirect(new URL("/auth/login", nextUrl));
   }
+
   return null;
+});
+
+// Optionally, don't invoke Middleware on some paths
+// It invokes the auth method on every path
+export const config = {
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
-
-// @ts-ignore
-export default auth(middleware);
-
-// export default auth(async function middleware(req: NextRequest) {
-//   // Your custom middleware logic goes here
-// });

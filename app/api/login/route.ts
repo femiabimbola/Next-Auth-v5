@@ -22,8 +22,8 @@ export const POST = async (request: Request) => {
     if (!existingUser || !existingUser.email || !existingUser.password) {
       return NextResponse.json({ error: " User does not exist" }, { status: 200 });
     }
-
     await signIn("credentials", { email, password, redirect: false });
+
     return NextResponse.json({ success: "user signed successfully" }, { status: 201 });
   } catch (error) {
     if (error instanceof AuthError) {
@@ -39,6 +39,6 @@ export const POST = async (request: Request) => {
   }
 };
 
-export const GET = async (request: Request) => {
-  return NextResponse.json({ success: "LOGIN ROUTE" }, { status: 200 });
-};
+// export const GET = async (request: Request) => {
+//   return NextResponse.json({ success: "LOGIN ROUTE" }, { status: 200 });
+// };
