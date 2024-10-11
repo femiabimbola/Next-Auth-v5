@@ -35,7 +35,9 @@ export const POST = async (request: Request) => {
       }
     }
     // throw { error: "something went wrong again " };
-    return NextResponse.json({ error: "Something not right" }, { status: 200 });
+    // return NextResponse.json({ error: "Something not right" }, { status: 200 });
+
+    throw error;
   }
 };
 

@@ -1,8 +1,7 @@
-"use server";
-
 import authConfig from "@/auth.config";
 import NextAuth from "next-auth";
 import { redirect } from "next/navigation";
+import { getUserById } from "./data/user";
 import { NextResponse, NextRequest } from "next/server";
 
 const { auth } = NextAuth(authConfig);
