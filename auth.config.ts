@@ -1,6 +1,6 @@
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
-
+import LinkedIn from "next-auth/providers/linkedin";
 import Credentials from "next-auth/providers/credentials";
 
 import type { NextAuthConfig } from "next-auth";
@@ -11,8 +11,14 @@ import { error } from "console";
 
 export default {
   providers: [
-    GitHub,
-    Google,
+    GitHub({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.g,
+    }),
+    LinkedIn({
+      clientId: process.env.AUTH_LINKEDIN_ID,
+      clientSecret: process.env.AUTH_LINKEDIN_SECRET,
+    }),
     Credentials({
       authorize: async (credentials) => {
         const validatedFields = LoginSchema.safeParse(credentials);

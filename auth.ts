@@ -21,11 +21,20 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
       return token;
     },
+
+    //It is important to try next-auth.d.ts
     async session({ token, session }) {
       if (token.role && session.user) {
         session.user.role = token.role as UserRole; // uses the next-auth.d.ts
       }
       return session;
+    },
+
+    async signIn({ user, account }) {
+      const existingUser = await getUserById(user.id);
+      // if (!existingUser?.emailVerified) return false;
+
+      return true;
     },
   },
   ...authConfig,
