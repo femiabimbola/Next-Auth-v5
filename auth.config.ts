@@ -11,9 +11,9 @@ import { error } from "console";
 
 export default {
   providers: [
-    GitHub({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.g,
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
     LinkedIn({
       clientId: process.env.AUTH_LINKEDIN_ID,

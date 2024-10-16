@@ -8,6 +8,9 @@ import { UserRole } from "@prisma/client";
 export const { auth, handlers, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" }, //Can't use db because of prisma. It can store session
+  pages: {
+    signIn: "/auth/login",
+  },
   callbacks: {
     async jwt({ token }) {
       if (!token.sub) return token; //token.sub means i'm logged out
