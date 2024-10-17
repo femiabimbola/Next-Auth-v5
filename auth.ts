@@ -10,6 +10,16 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" }, //Can't use db because of prisma. It can store session
   pages: {
     signIn: "/auth/login",
+    error: "/auth/error",
+  },
+  events: {
+    // for verifing Oauth email
+    async linkAccount({ user }) {
+      await db.user.update({
+        where: { id: user.id },
+        data: { emailVerified: new Date() },
+      });
+    },
   },
   callbacks: {
     async jwt({ token }) {
@@ -33,12 +43,12 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return session;
     },
 
-    async signIn({ user, account }) {
-      const existingUser = await getUserById(user.id);
-      // if (!existingUser?.emailVerified) return false;
+    // async signIn({ user, account }) {
+    //   // const existingUser = await getUserById(user.id);
+    //   // if (!existingUser?.emailVerified) return false;
 
-      return true;
-    },
+    //   return true;
+    // },
   },
   ...authConfig,
 });

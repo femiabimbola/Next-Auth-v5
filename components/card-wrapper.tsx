@@ -12,7 +12,7 @@ const font = Poppins({
 interface CardWrapperProps {
   children: React.ReactNode;
   headerLabel: string;
-  headerDescription: string;
+  headerDescription?: string;
   backButtonLabel: string;
   backButtonHref: string;
   showSocial?: boolean;
@@ -38,7 +38,13 @@ export const CardWrapper = ({
           <SocialButton />
         </CardFooter>
       )}
-      <CardFooter> <BackButton label={backButtonLabel} href={backButtonHref}/></CardFooter>
+      <CardFooter>
+        {" "}
+        <BackButton
+          label={backButtonLabel}
+          href={backButtonHref}
+        />
+      </CardFooter>
     </Card>
   );
 };
