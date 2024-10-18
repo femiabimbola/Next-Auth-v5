@@ -3,6 +3,7 @@ import { RegisterSchema } from "@/schemas";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/data/user";
+import { generateVerificationToken } from "@/lib/token";
 
 export const POST = async (request: Request) => {
   try {
@@ -20,8 +21,9 @@ export const POST = async (request: Request) => {
     if (exisitingUser) return NextResponse.json({ error: "Email already in use" }, { status: 200 });
 
     await db.user.create({ data: { name, email, password: hashedPassword } });
+    const verificationToken = await generateVerificationToken(email);
 
-    return NextResponse.json({ success: "user created sucessfully" }, { status: 201 });
+    return NextResponse.json({ success: "Confirmation email sent" }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: "something went wrong" }, { status: 500 });
   }

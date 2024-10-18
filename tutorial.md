@@ -111,5 +111,24 @@ npx prisma db push
 ```bash
 npx prisma generate
 
-npx primsa db push
+npx prisma db push
+```
+
+<b> To read the data</b>
+
+```bash
+npx prisma studio
+```
+
+## Working with Error url
+
+```login.tsx
+import { useSearchParams } from 'next/navigation'
+
+
+export const LoginForm = () => {
+  // Setting the state
+  const SearchParams = useSearchParams()
+  const urlError = SearchParams.get('error')
+}
 ```

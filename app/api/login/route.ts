@@ -5,6 +5,7 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
 import { getUserByEmail } from "@/data/user";
 import { redirect } from "next/navigation";
+import { generateVerificationToken } from "@/lib/token";
 
 export const POST = async (request: Request) => {
   try {
@@ -18,9 +19,12 @@ export const POST = async (request: Request) => {
 
     const existingUser = await getUserByEmail(email);
 
-    // console.log(existingUser);
     if (!existingUser || !existingUser.email || !existingUser.password) {
       return NextResponse.json({ error: " User does not exist" }, { status: 200 });
+    }
+    if (!existingUser.emailVerified) {
+      const verification = await generateVerificationToken(existingUser.email);
+      return NextResponse.json({ success: "confirmation email sent" }, { status: 200 });
     }
     await signIn("credentials", { email, password, redirect: false });
 

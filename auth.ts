@@ -43,12 +43,13 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return session;
     },
 
-    // async signIn({ user, account }) {
-    //   // const existingUser = await getUserById(user.id);
-    //   // if (!existingUser?.emailVerified) return false;
+    async signIn({ user, account }) {
+      // Allowing Oauth
+      const existingUser = await getUserById(user.id);
+      if (!existingUser?.emailVerified) return false;
 
-    //   return true;
-    // },
+      return true;
+    },
   },
   ...authConfig,
 });

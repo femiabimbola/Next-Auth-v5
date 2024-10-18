@@ -12,11 +12,14 @@ import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import axios from "axios";
 import { useEffect, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession, SessionProvider } from "next-auth/react";
 
 export const LoginForm = () => {
   // Setting the state
+  const SearchParams = useSearchParams();
+  const urlError = SearchParams.get("error") === "OAuthAccountNotLinked";
+
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [showPassword, setShowPassword] = useState(false);
