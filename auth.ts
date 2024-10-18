@@ -45,6 +45,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
     async signIn({ user, account }) {
       // Allowing Oauth
+      if (account?.provider !== "credential") return true;
       const existingUser = await getUserById(user.id);
       if (!existingUser?.emailVerified) return false;
 

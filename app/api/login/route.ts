@@ -6,6 +6,7 @@ import { AuthError } from "next-auth";
 import { getUserByEmail } from "@/data/user";
 import { redirect } from "next/navigation";
 import { generateVerificationToken } from "@/lib/token";
+import { sendVerificationEmail } from "@/lib/mail";
 
 export const POST = async (request: Request) => {
   try {
@@ -23,7 +24,8 @@ export const POST = async (request: Request) => {
       return NextResponse.json({ error: " User does not exist" }, { status: 200 });
     }
     if (!existingUser.emailVerified) {
-      const verification = await generateVerificationToken(existingUser.email);
+      const verificationToken = await generateVerificationToken(existingUser.email);
+      await sendVerificationEmail(verificationToken.email, verificationToken.token);
       return NextResponse.json({ success: "confirmation email sent" }, { status: 200 });
     }
     await signIn("credentials", { email, password, redirect: false });
