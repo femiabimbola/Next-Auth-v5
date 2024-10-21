@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/token";
+import { sendVerificationEmail } from "@/lib/mail";
 
 export const POST = async (request: Request) => {
   try {
@@ -22,6 +23,7 @@ export const POST = async (request: Request) => {
 
     await db.user.create({ data: { name, email, password: hashedPassword } });
     const verificationToken = await generateVerificationToken(email);
+    await sendVerificationEmail(verificationToken.email, verificationToken.token);
 
     return NextResponse.json({ success: "Confirmation email sent" }, { status: 201 });
   } catch (error) {
