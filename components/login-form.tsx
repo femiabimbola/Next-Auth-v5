@@ -14,6 +14,7 @@ import axios from "axios";
 import { useEffect, useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession, SessionProvider } from "next-auth/react";
+import Link from "next/link";
 
 export const LoginForm = () => {
   // Setting the state
@@ -110,6 +111,14 @@ export const LoginForm = () => {
         </div>
         <FormError message={error} />
         <FormSuccess message={success} />
+        <Button
+          size="lg"
+          variant={"link"}
+          asChild
+          className="px-0"
+        >
+          <Link href={"/auth/reset"}>Forgot Password</Link>
+        </Button>
         <Button
           type="submit"
           className="w-full py-6 bg-[#01113B]"

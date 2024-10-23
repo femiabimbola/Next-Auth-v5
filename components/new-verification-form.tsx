@@ -22,11 +22,16 @@ export const NewVerificationForm = () => {
       return;
     }
 
-    await axios.get("/api/new-verification/", { params: { token } }).then((response: any) => {
-      setSuccess(response.data.success);
-      setError(response.data.error);
-      router.push("/settings");
-    });
+    await axios
+      .get("/api/new-verification/", { params: { token } })
+      .then((response: any) => {
+        setSuccess(response.data.success);
+        setError(response.data.error);
+        router.push("/settings");
+      })
+      .catch(() => {
+        setError("something went wrong");
+      });
   }, [token]);
 
   useEffect(() => {
