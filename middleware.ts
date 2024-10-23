@@ -20,7 +20,7 @@ export default auth((req) => {
 
   if (isApiAuthRoute) return null;
 
-  console.log(isLoggedIn);
+  // console.log(isLoggedIn);
   if (isAuthRoute) {
     // if (isLoggedIn) return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     if (isLoggedIn) return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.url));
