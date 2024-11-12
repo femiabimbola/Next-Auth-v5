@@ -11,6 +11,7 @@ import { useState, useTransition } from "react";
 import { CardWrapper } from "./card-wrapper";
 import { ResetSchema } from "@/schemas";
 import * as z from "zod";
+import axios from "axios";
 
 const ResetPassword = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -22,6 +23,18 @@ const ResetPassword = () => {
     defaultValues: { email: "" },
   });
 
+  const onSubmit = (values: z.infer<typeof ResetSchema>) => {
+    setError("");
+    setSuccess("");
+
+    startTransition(async () => {
+      await axios.post("/api/reset/", values).then((response: any) => {
+        setSuccess(response.data.success);
+        setError(response.data.error);
+      });
+    });
+  };
+
   return (
     <CardWrapper
       headerLabel="Forgot your password"
@@ -30,7 +43,7 @@ const ResetPassword = () => {
     >
       <Form {...form}>
         <form
-          // onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-6"
         >
           <div className="space-y-4">

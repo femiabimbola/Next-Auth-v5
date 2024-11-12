@@ -22,6 +22,7 @@ export const POST = async (request: Request) => {
     if (exisitingUser) return NextResponse.json({ error: "Email already in use" }, { status: 200 });
 
     await db.user.create({ data: { name, email, password: hashedPassword } });
+
     const verificationToken = await generateVerificationToken(email);
     await sendVerificationEmail(verificationToken.email, verificationToken.token);
 
