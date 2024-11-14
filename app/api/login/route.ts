@@ -23,6 +23,7 @@ export const POST = async (request: Request) => {
     if (!existingUser || !existingUser.email || !existingUser.password) {
       return NextResponse.json({ error: " User does not exist" }, { status: 200 });
     }
+
     if (!existingUser.emailVerified) {
       const verificationToken = await generateVerificationToken(existingUser.email);
       await sendVerificationEmail(verificationToken.email, verificationToken.token);
